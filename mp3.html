@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Page Title</title>
+   </head>
+   <style>
+   .yellow{
+      background-color : yellow;
+      }
+   </style>
+   <body>
+      <div>
+      <h1>Mp3 Player </h1>
+      <p>Click on the play button to play a sound:</p>
+      <audio  id="audioplayer" controls autoplay>
+         <source  id="songvalue" type="audio/mpeg" src="">
+         <!-- we might change the type audio/mpeg-->
+      </audio>
+      <ul id="playerList">
+         <li path="file:///H:/Songs/Song%201.mp3">Song 1</li>
+         <li path="file:///H:/Songs/Song%202.mp3">Song 2</li>
+         <li path="file:///H:/Songs/Song%203.mp3">Song 3</li>
+      </ul>
+   </body>
+   <script>
+      let playingCount = 0;
+document.getElementById("playerList").addEventListener('click', (event) => {
+    let list = document.getElementsByTagName("li");
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].classList.contains("yellow")) {
+            list[i].classList.remove("yellow");
+        }
+    }
+
+    event.srcElement.className = "yellow";
+
+    document.getElementById("songvalue").src = event.srcElement.getAttribute("path");
+
+    var audioplayer = document.getElementById("audioplayer");
+    audioplayer.load();
+    audioplayer.play();
+    playingCount = 1;
+
+
+});
+
+var aud = document.getElementById("audioplayer");
+aud.onended = function() {
+    setTimeout(nextSong, 2000);
+};
+
+function nextSong() {
+    let list = document.getElementsByTagName("li");
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].classList.contains("yellow")) {
+            list[i].classList.remove("yellow");
+            if (i + 1 === list.length) {
+                list[0].classList.add("yellow");
+                document.getElementById("songvalue").src = list[0].getAttribute("path");
+            } else {
+                list[i + 1].classList.add("yellow");
+                document.getElementById("songvalue").src = list[i + 1].getAttribute("path");
+            }
+            var audioplayer = document.getElementById("audioplayer");
+            audioplayer.load();
+            audioplayer.play();
+            break;
+        }
+    }
+}
+          
+   </script>
+</html>
